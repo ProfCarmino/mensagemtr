@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nosso chat comum</title>
+    <!-- ir para a pagina digitando cdn jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+    r
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <form id="chat">
+      <input type="text" name="username" placeholder="digite seu usuário" />
+      <div class="mensagens"></div>
+      <input type="text" name="mensagem" placeholder="digite sua mensagem" />
+      <button type="submit">Envia a mensagem</button>
+      <!-- depois de criar o io -->
+    </form>
+    <script type="text/javascript">
+      var socket = io("http://localhost:3000/");
+      // depois dos dados 
+      function rederizar(mensagem){
+        $('.mensagens').append('<div classs="mensagens"><strong>' + mensagem.autor + '</strong>:' + mensagem.mensage + '</div>')
+
+      }
+      // criar enviar a mensagem
+      $('#chat').submit(function (event) {
+        event.preventDefault();
+        
+        var autor = $('input[name=username]').val();
+        var mensage = $('input[name=mensagem]').val();
+        var messageObjeto = {
+          autor: autor,
+          mensage: mensage,
+        };
+        rederizar(messageObjeto);
+        socket.emit('sendMessage', messageObjeto);
+      });
+    </script>
+  </body>
+</html>
